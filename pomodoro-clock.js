@@ -67,7 +67,7 @@ function main() {
         }
     }
 
-  }
+  
 
 
   function stop() {}
@@ -119,6 +119,6 @@ function main() {
   });
 
   startStopButton.addEventListener("click", sessionCounter);
-}
 
+}
 main();
