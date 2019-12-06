@@ -2,6 +2,8 @@
 <html>
     <head>
             <title>Pomodoro Clock</title>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
             <link rel ="stylesheet" type= "text/css" href="/style/main.css">
             <link rel="icon" href="data:;base64,=">
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -11,20 +13,20 @@
         <main id = "pomodoro-clock">
 
             <div id = "break-label">break length</div>
-            <button type = "button" id ="break-decrement" class = "break-length-button">-</button>
+            <button type = "button" id ="break-decrement" class = "break-length-button"><i class="material-icons">remove</i></button>
             <div id = "break-length">5</div>
-            <button type = "button" id ="break-increment" class = "break-length-button">+</button>
+            <button type = "button" id ="break-increment" class = "break-length-button"><i class="material-icons">add</i></button>
 
             <div id = "session-label">session length</div>
-            <button type = "button" id ="session-decrement" class = "session-length-button">-</button>
+            <button type = "button" id ="session-decrement" class = "session-length-button"><i class="material-icons">remove</i></button>
             <div id = "session-length">1</div>
-            <button type = "button" id ="session-increment" class = "session-length-button">+</button>
+            <button type = "button" id ="session-increment" class = "session-length-button"><i class="material-icons">add</i></button>
 
             <div id = "timer-label">session</div>
             <div id = "time-left">00:10</div>
             <div id = "controls">
-            <button type = "button" id = "start_stop">> ||</button>
-            <button type = "button" id = "reset">X</button>
+            <button type = "button" id = "start_stop"><i class="material-icons" id="play_pause">play_arrow</i></button>
+            <button type = "button" id = "reset"><i class="material-icons">replay</i></button>
             </div>
 
     </main>

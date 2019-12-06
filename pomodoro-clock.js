@@ -31,10 +31,16 @@ function main() {
         Array.from(sessionButtons).forEach(sessionButton => {
           sessionButton.disabled= false;
         });
+
+        document.querySelector("#play_pause").innerHTML = "play_arrow";
+
+        
   
       }
 
       else{
+
+        document.querySelector("#play_pause").innerHTML = "pause";
 
         Array.from(breakButtons).forEach(breakButton => {
           breakButton.disabled = true;
@@ -73,7 +79,9 @@ function main() {
           timerLabel.innerHTML = "break";
           isSession = false;
           console.log("break");
-          setTimeout(timer(min, sec), 1500);
+          timeLeft.className = "timeUpAnimation"
+          setTimeout(function(){timer(min, sec)}, 2000);
+          timeLeft.className = ""
         } else {
           min = getSessionLength().slice(0, 2);
           sec = getSessionLength().slice(3);
@@ -81,7 +89,9 @@ function main() {
           timerLabel.innerHTML = "session";
           isSession = true;
           console.log("session");
-          setTimeout(timer(min, sec), 1500);
+          timeLeft.className = "timeUpAnimation"
+          setTimeout(function(){timer(min, sec)}, 2000);
+          timeLeft.className = ""
         }
       }
     }
@@ -91,7 +101,6 @@ function main() {
   function startStop(e) {
 
     timerRunning = timerRunning ? false : true
-    console.log(timerRunning)
 
     if (timerRunning){
     let min = getTimeLeft().slice(0, 2);
@@ -134,10 +143,10 @@ function main() {
 
   function changeBreakLength(e) {
     let breakLength = document.querySelector("#break-length").innerHTML;
-    if (this.innerHTML == "+" && breakLength < 60) {
+    if (this.firstChild.innerHTML == "add" && breakLength < 60) {
       document.querySelector("#break-length").innerHTML = breakLength =
         parseInt(breakLength) + 1;
-    } else if (this.innerHTML == "-" && breakLength > 1) {
+    } else if (this.firstChild.innerHTML == "remove" && breakLength > 1) {
       document.querySelector("#break-length").innerHTML = breakLength =
         parseInt(breakLength) - 1;
     }
@@ -145,7 +154,7 @@ function main() {
 
   function changeSessionLength() {
     let sessionLength = document.querySelector("#session-length").innerHTML;
-    if (this.innerHTML == "+" && sessionLength < 60) {
+    if (this.firstChild.innerHTML == "add" && sessionLength < 60) {
       document.querySelector("#session-length").innerHTML =
         parseInt(sessionLength) + 1;
       if (document.querySelector("#session-length").innerHTML.length < 2) {
@@ -155,7 +164,7 @@ function main() {
         document.querySelector("#time-left").innerHTML =
           (parseInt(sessionLength) + 1).toString() + ":00";
       }
-    } else if (this.innerHTML == "-" && sessionLength > 1) {
+    } else if (this.firstChild.innerHTML == "remove" && sessionLength > 1) {
       document.querySelector("#session-length").innerHTML =
         parseInt(sessionLength) - 1;
       if (document.querySelector("#session-length").innerHTML.length < 2) {
