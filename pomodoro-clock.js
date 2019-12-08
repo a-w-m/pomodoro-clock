@@ -15,6 +15,8 @@ function main() {
   function timer(min, sec) {
     let timeLeft = document.querySelector("#time-left");
     let timerLabel = document.querySelector("#timer-label");
+    timeLeft.style.color = "";
+
 
 
     let time = setInterval(function() {
@@ -79,9 +81,8 @@ function main() {
           timerLabel.innerHTML = "break";
           isSession = false;
           console.log("break");
-          timeLeft.className = "timeUpAnimation"
+          timeLeft.style.color = "#cd140b"
           setTimeout(function(){timer(min, sec)}, 2000);
-          timeLeft.className = ""
         } else {
           min = getSessionLength().slice(0, 2);
           sec = getSessionLength().slice(3);
@@ -89,9 +90,8 @@ function main() {
           timerLabel.innerHTML = "session";
           isSession = true;
           console.log("session");
-          timeLeft.className = "timeUpAnimation"
+          timeLeft.style.color = "#cd140b"
           setTimeout(function(){timer(min, sec)}, 2000);
-          timeLeft.className = ""
         }
       }
     }
@@ -115,9 +115,13 @@ function main() {
 
   function reset(e){
     timerRunning = false;
+    isSession = true;
+    document.querySelector('#timer-label').innerHTML = "session"
     sessionLength.innerHTML = "25"
     breakLength.innerHTML = "5"
     timeLeft.innerHTML = "00:10"
+
+
    
   }
   function getBreakLength() {
@@ -144,11 +148,29 @@ function main() {
   function changeBreakLength(e) {
     let breakLength = document.querySelector("#break-length").innerHTML;
     if (this.firstChild.innerHTML == "add" && breakLength < 60) {
-      document.querySelector("#break-length").innerHTML = breakLength =
+      document.querySelector("#break-length").innerHTML = 
         parseInt(breakLength) + 1;
+
+        if (document.querySelector("#break-length").innerHTML.length < 2 && document.querySelector('#timer-label').innerHTML =="break") {
+          document.querySelector("#time-left").innerHTML =
+            "0" + (parseInt(breakLength) + 1).toString() + ":00";
+        } else if (document.querySelector("#break-length").innerHTML.length == 2 && document.querySelector('#timer-label').innerHTML =="break") {
+          document.querySelector("#time-left").innerHTML =
+            (parseInt(breakLength) + 1).toString() + ":00";
+        }
+
+
     } else if (this.firstChild.innerHTML == "remove" && breakLength > 1) {
-      document.querySelector("#break-length").innerHTML = breakLength =
+      document.querySelector("#break-length").innerHTML =
         parseInt(breakLength) - 1;
+
+        if (document.querySelector("#break-length").innerHTML.length < 2 && document.querySelector('#timer-label').innerHTML =="break") {
+          document.querySelector("#time-left").innerHTML =
+            "0" + (parseInt(breakLength) - 1).toString() + ":00";
+        } else if (document.querySelector("#break-length").innerHTML.length == 2 && document.querySelector('#timer-label').innerHTML =="break") {
+          document.querySelector("#time-left").innerHTML =
+            (parseInt(breakLength) - 1).toString() + ":00";
+        }
     }
   }
 
@@ -157,20 +179,20 @@ function main() {
     if (this.firstChild.innerHTML == "add" && sessionLength < 60) {
       document.querySelector("#session-length").innerHTML =
         parseInt(sessionLength) + 1;
-      if (document.querySelector("#session-length").innerHTML.length < 2) {
+      if (document.querySelector("#session-length").innerHTML.length < 2 && document.querySelector('#timer-label').innerHTML =="session") {
         document.querySelector("#time-left").innerHTML =
           "0" + (parseInt(sessionLength) + 1).toString() + ":00";
-      } else {
+      } else if (document.querySelector("#session-length").innerHTML.length == 2 && document.querySelector('#timer-label').innerHTML =="session") {
         document.querySelector("#time-left").innerHTML =
           (parseInt(sessionLength) + 1).toString() + ":00";
       }
     } else if (this.firstChild.innerHTML == "remove" && sessionLength > 1) {
       document.querySelector("#session-length").innerHTML =
         parseInt(sessionLength) - 1;
-      if (document.querySelector("#session-length").innerHTML.length < 2) {
+      if (document.querySelector("#session-length").innerHTML.length < 2 && document.querySelector('#timer-label').innerHTML =="session") {
         document.querySelector("#time-left").innerHTML =
           "0" + (parseInt(sessionLength) - 1).toString() + ":00";
-      } else {
+      } else if (document.querySelector("#session-length").innerHTML.length == 2 && document.querySelector('#timer-label').innerHTML =="session") {
         document.querySelector("#time-left").innerHTML =
           (parseInt(sessionLength) - 1).toString() + ":00";
       }
