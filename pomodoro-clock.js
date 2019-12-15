@@ -73,6 +73,7 @@ function main() {
 
       if (min == "00" && sec == "00") {
         clearInterval(time);
+        document.querySelector("#beep").play();
 
         if (isSession) {
           min = getBreakLength().slice(0, 2);
