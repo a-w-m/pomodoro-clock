@@ -17,7 +17,7 @@ function main() {
     let timerLabel = document.querySelector("#timer-label");
     timeLeft.style.color = "";
 
-
+      //timer function
 
     let time = setInterval(function() {
       
