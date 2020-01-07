@@ -1,215 +1,191 @@
 function main() {
-  let decrement = document.querySelector("#break-decrement");
-  let increment = document.querySelector("#break-increment");
-  let breakButtons = document.querySelectorAll(".break-length-button");
-  let sessionButtons = document.querySelectorAll(".session-length-button");
-  let startStopButton = document.querySelector("#start_stop");
-  let resetButton = document.querySelector("#reset")
-  let sessionLength = document.querySelector("#session-length")
-  let breakLength = document.querySelector("#break-length")
-  let timeLeft = document.querySelector('#time-left');
-  let isSession = true;
-  let timerRunning = false;
- 
+	/*global variables*/
 
-  function timer(min, sec) {
-    let timeLeft = document.querySelector("#time-left");
-    let timerLabel = document.querySelector("#timer-label");
-    timeLeft.style.color = "";
+	var decrement = document.querySelector("#break-decrement");
+	var increment = document.querySelector("#break-increment");
+	var breakButtons = document.querySelectorAll(".break-length-button");
+	var sessionButtons = document.querySelectorAll(".session-length-button");
+	var startStopButton = document.querySelector("#start_stop");
+	var resetButton = document.querySelector("#reset");
+	var sessionLength = document.querySelector("#session-length");
+	var breakLength = document.querySelector("#break-length");
+	var timeLeft = document.querySelector("#time-left");
+	var timerLabel = document.querySelector("#timer-label");
+	var isSession = true;
+	var timerRunning = false;
+	var beep = document.querySelector("#beep");
+	var time;
 
-      //timer function
+	function timer(min, sec) {
+		/* the timer functions contains the time setInterval function that implements the countdown.*/
 
-    let time = setInterval(function() {
-      
+		timeLeft.style.color = "";
 
-      if(!timerRunning){
-        clearInterval(time)
+		time = setInterval(function() {
+			/*if the time reaches "00:00", play alarm, change color of time displayed, get break/session time, update time-left to break/session time*/
 
-        Array.from(breakButtons).forEach(breakButton => {
-          breakButton.disabled = false;
-          });
-      
-      
-        Array.from(sessionButtons).forEach(sessionButton => {
-          sessionButton.disabled= false;
-        });
+			if (min == "00" && sec == "00") {
+				beep.play();
+				timeLeft.style.color = "#cd140b";
 
-        document.querySelector("#play_pause").innerHTML = "play_arrow";
+				if (isSession) {
+					min = getBreakLength().slice(0, 2);
+					sec = getBreakLength().slice(3);
+					timeLeft.innerHTML = min + ":" + sec;
+					timerLabel.innerHTML = "break";
+					isSession = false;
+				} else {
+					min = getSessionLength().slice(0, 2);
+					sec = getSessionLength().slice(3);
+					timeLeft.innerHTML = min + ":" + sec;
+					timerLabel.innerHTML = "session";
+					isSession = true;
+				}
+			} else {
+				timeLeft.style.color = "";
 
-        
-  
-      }
+				document.querySelector("#play_pause").innerHTML = "pause";
 
-      else{
+				/*decrement min if seconds reach zero and adjust seconds to 60*/
 
-        document.querySelector("#play_pause").innerHTML = "pause";
+				if (sec == "00" && parseInt(min) <= 10) {
+					min = "0" + (parseInt(min) - 1).toString();
+					sec = "60";
+				} else if (sec == "00") {
+					min = parseInt(min) - 1;
+					sec = "60";
+				}
 
-        Array.from(breakButtons).forEach(breakButton => {
-          breakButton.disabled = true;
-          });
-      
-      
-        Array.from(sessionButtons).forEach(sessionButton => {
-          sessionButton.disabled=true;
-        });
+				/*decrement seconds*/
 
+				sec =
+					parseInt(sec) <= 10
+						? "0" + (parseInt(sec) - 1).toString()
+						: (sec = parseInt(sec) - 1);
 
-       
+				/*update time left*/
 
-      if (sec == "00" && parseInt(min) <= 10) {
-        min = "0" + (parseInt(min) - 1).toString();
-        sec = "60";
-      } else if (sec == "00") {
-        min = parseInt(min) - 1;
-        sec = "60";
-      }
+				timeLeft.innerHTML = min + ":" + sec;
+			}
+		}, 1000);
+	}
 
-      sec =
-        parseInt(sec) <= 10
-          ? "0" + (parseInt(sec) - 1).toString()
-          : (sec = parseInt(sec) - 1);
+	function startStop(e) {
+		/*startStop() pauses/resume the timer. Uses boolean timerRunning to determine whethere to pause/resume.*/
 
-      timeLeft.innerHTML = min + ":" + sec;
+		timerRunning = timerRunning ? false : true;
 
-      if (min == "00" && sec == "00") {
-        clearInterval(time);
-        document.querySelector("#beep").play();
+		if (timerRunning) {
+			let min = getTimeLeft().slice(0, 2);
+			let sec = getTimeLeft().slice(3);
+			timer(min, sec);
+		} else {
+			clearInterval(time);
 
-        if (isSession) {
-          min = getBreakLength().slice(0, 2);
-          sec = getBreakLength().slice(3);
-          timeLeft.innerHTML = min + ":" + sec;
-          timerLabel.innerHTML = "break";
-          isSession = false;
-          console.log("break");
-          timeLeft.style.color = "#cd140b"
-          setTimeout(function(){timer(min, sec)}, 2000);
-        } else {
-          min = getSessionLength().slice(0, 2);
-          sec = getSessionLength().slice(3);
-          timeLeft.innerHTML = min + ":" + sec;
-          timerLabel.innerHTML = "session";
-          isSession = true;
-          console.log("session");
-          timeLeft.style.color = "#cd140b"
-          setTimeout(function(){timer(min, sec)}, 2000);
-        }
-      }
-    }
-    }, 1000);
-  }
+			Array.from(breakButtons).forEach(breakButton => {
+				breakButton.disabled = false;
+			});
 
-  function startStop(e) {
+			Array.from(sessionButtons).forEach(sessionButton => {
+				sessionButton.disabled = false;
+			});
 
-    timerRunning = timerRunning ? false : true
+			document.querySelector("#play_pause").innerHTML = "play_arrow";
+		}
+	}
 
-    if (timerRunning){
-    let min = getTimeLeft().slice(0, 2);
-    let sec = getTimeLeft().slice(3);
-    timer(min, sec);
+	function reset(e) {
+		/*sets all variables and html to the original state*/
 
+		clearInterval(time);
+		timerRunning = false;
+		isSession = true;
+		document.querySelector("#timer-label").innerHTML = "session";
+		document.querySelector("#play_pause").innerHTML = "play_arrow";
+		sessionLength.innerHTML = "25";
+		breakLength.innerHTML = "5";
+		timeLeft.innerHTML = "25:00";
+		beep.load();
+		beep.currentTime = 0;
+	}
+	function getBreakLength() {
+		/*returns breakLength as string in "00:00" format*/
 
-    
-  }
+		if (breakLength.innerHTML.length == 2) {
+			return breakLength.innerHTML + ":00";
+		} else {
+			return "0" + breakLength.innerHTML + ":00";
+		}
+	}
 
-}
+	function getSessionLength() {
+		/*returns sessionLength as string in "00:00" format*/
 
-  function reset(e){
-    timerRunning = false;
-    isSession = true;
-    document.querySelector('#timer-label').innerHTML = "session"
-    sessionLength.innerHTML = "25"
-    breakLength.innerHTML = "5"
-    timeLeft.innerHTML = "00:10"
+		if (sessionLength.innerHTML.length == 2) {
+			return sessionLength.innerHTML + ":00";
+		} else {
+			return "0" + sessionLength.innerHTML + ":00";
+		}
+	}
 
+	function getTimeLeft() {
+		/*returns current time displayed as string*/
 
-   
-  }
-  function getBreakLength() {
-    if (breakLength.innerHTML.length == 2) {
-      return breakLength.innerHTML + ":00";
-    } else {
-      return "0" + breakLength.innerHTML + ":00";
-    }
-  }
+		return timeLeft.innerHTML;
+	}
 
-  function getSessionLength() {
-    if (sessionLength.innerHTML.length == 2) {
-      return sessionLength.innerHTML + ":00";
-    } else {
-      return "0" + sessionLength.innerHTML + ":00";
-    }
-  }
+	function changeBreakLength(e) {
+		/*increases or decreases breakLength by one, within the range 1-60. Changes timeLeft only if timer is not running and currently on a break */
 
-  function getTimeLeft(){
-    return timeLeft.innerHTML
-  }
+		let breakLength = document.querySelector("#break-length").innerHTML;
+		if (this.firstChild.innerHTML == "add" && breakLength < 60) {
+			document.querySelector("#break-length").innerHTML =
+				parseInt(breakLength) + 1;
+		} else if (this.firstChild.innerHTML == "remove" && breakLength > 1) {
+			document.querySelector("#break-length").innerHTML =
+				parseInt(breakLength) - 1;
+		}
 
+		if (
+			!timerRunning &&
+			document.querySelector("#timer-label").innerHTML == "break"
+		) {
+			document.querySelector("#time-left").innerHTML = getBreakLength();
+		}
+	}
 
-  function changeBreakLength(e) {
-    let breakLength = document.querySelector("#break-length").innerHTML;
-    if (this.firstChild.innerHTML == "add" && breakLength < 60) {
-      document.querySelector("#break-length").innerHTML = 
-        parseInt(breakLength) + 1;
+	function changeSessionLength() {
+		/*increases or decreases sessionLength by one, within the range 1-60. Changes timeLeft only if timer is not running and currently on a session */
 
-        if (document.querySelector("#break-length").innerHTML.length < 2 && document.querySelector('#timer-label').innerHTML =="break") {
-          document.querySelector("#time-left").innerHTML =
-            "0" + (parseInt(breakLength) + 1).toString() + ":00";
-        } else if (document.querySelector("#break-length").innerHTML.length == 2 && document.querySelector('#timer-label').innerHTML =="break") {
-          document.querySelector("#time-left").innerHTML =
-            (parseInt(breakLength) + 1).toString() + ":00";
-        }
+		let sessionLength = document.querySelector("#session-length").innerHTML;
+		if (this.firstChild.innerHTML == "add" && sessionLength < 60) {
+			document.querySelector("#session-length").innerHTML =
+				parseInt(sessionLength) + 1;
+		} else if (this.firstChild.innerHTML == "remove" && sessionLength > 1) {
+			document.querySelector("#session-length").innerHTML =
+				parseInt(sessionLength) - 1;
+		}
 
+		if (
+			!timerRunning &&
+			document.querySelector("#timer-label").innerHTML == "session"
+		) {
+			document.querySelector("#time-left").innerHTML = getSessionLength();
+		}
+	}
 
-    } else if (this.firstChild.innerHTML == "remove" && breakLength > 1) {
-      document.querySelector("#break-length").innerHTML =
-        parseInt(breakLength) - 1;
+	/*assigns event listeners to buttons, that call various functions upon button click*/
 
-        if (document.querySelector("#break-length").innerHTML.length < 2 && document.querySelector('#timer-label').innerHTML =="break") {
-          document.querySelector("#time-left").innerHTML =
-            "0" + (parseInt(breakLength) - 1).toString() + ":00";
-        } else if (document.querySelector("#break-length").innerHTML.length == 2 && document.querySelector('#timer-label').innerHTML =="break") {
-          document.querySelector("#time-left").innerHTML =
-            (parseInt(breakLength) - 1).toString() + ":00";
-        }
-    }
-  }
+	Array.from(breakButtons).forEach(breakButton => {
+		breakButton.addEventListener("click", changeBreakLength);
+	});
 
-  function changeSessionLength() {
-    let sessionLength = document.querySelector("#session-length").innerHTML;
-    if (this.firstChild.innerHTML == "add" && sessionLength < 60) {
-      document.querySelector("#session-length").innerHTML =
-        parseInt(sessionLength) + 1;
-      if (document.querySelector("#session-length").innerHTML.length < 2 && document.querySelector('#timer-label').innerHTML =="session") {
-        document.querySelector("#time-left").innerHTML =
-          "0" + (parseInt(sessionLength) + 1).toString() + ":00";
-      } else if (document.querySelector("#session-length").innerHTML.length == 2 && document.querySelector('#timer-label').innerHTML =="session") {
-        document.querySelector("#time-left").innerHTML =
-          (parseInt(sessionLength) + 1).toString() + ":00";
-      }
-    } else if (this.firstChild.innerHTML == "remove" && sessionLength > 1) {
-      document.querySelector("#session-length").innerHTML =
-        parseInt(sessionLength) - 1;
-      if (document.querySelector("#session-length").innerHTML.length < 2 && document.querySelector('#timer-label').innerHTML =="session") {
-        document.querySelector("#time-left").innerHTML =
-          "0" + (parseInt(sessionLength) - 1).toString() + ":00";
-      } else if (document.querySelector("#session-length").innerHTML.length == 2 && document.querySelector('#timer-label').innerHTML =="session") {
-        document.querySelector("#time-left").innerHTML =
-          (parseInt(sessionLength) - 1).toString() + ":00";
-      }
-    }
-  }
+	Array.from(sessionButtons).forEach(sessionButton => {
+		sessionButton.addEventListener("click", changeSessionLength);
+	});
 
-  Array.from(breakButtons).forEach(breakButton => {
-    breakButton.addEventListener("click", changeBreakLength);
-  });
+	startStopButton.addEventListener("click", startStop);
 
-  Array.from(sessionButtons).forEach(sessionButton => {
-    sessionButton.addEventListener("click", changeSessionLength);
-  });
-
-  startStopButton.addEventListener("click", startStop);
-
-  resetButton.addEventListener("click", reset);
+	resetButton.addEventListener("click", reset);
 }
 main();

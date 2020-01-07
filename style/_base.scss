@@ -1,62 +1,57 @@
-
 /*Media Queries all*/
 
 @mixin for-phone-only {
-    @media (max-width: 599px) {
-      @content;
-    }
-  }
-  @mixin for-phone-landscape-up {
-    @media (min-width: 560px) and (max-width: 899px) and (orientation: landscape) {
-      @content;
-    }
-  }
-  @mixin for-tablet-only {
-    @media only screen and (min-width: 600px) and (orientation: portrait) {
-      @content;
-    }
-  }
-  @mixin for-tablet-landscape-only{
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) 
-     and (-webkit-min-device-pixel-ratio: 1){
-      @content;
-    }
-  }
-  @mixin for-desktop-up {
-    @media (min-width: 1024px) {
-      @content;
-    }
-  }
- 
-  @mixin for-extra-large-tablet-only /*IPad Pro*/ {
-    @media only screen and (min-width: 1024px) and (max-width: 1024px)  and (-webkit-min-device-pixel-ratio: 2) and  (orientation: portrait) {
-      @content;
-    }
-  }
-  @mixin for-extra-large-tablet-landscape /*IPad Pro*/ {
-    @media only screen and (min-width: 1366px) and (max-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
-      @content;
-    }
-  }
+	@media (max-width: 599px) {
+		@content;
+	}
+}
+@mixin for-phone-landscape-up {
+	@media (min-width: 560px) and (max-width: 899px) and (orientation: landscape) {
+		@content;
+	}
+}
+@mixin for-tablet-only {
+	@media only screen and (min-width: 600px) and (orientation: portrait) {
+		@content;
+	}
+}
+@mixin for-tablet-landscape-only {
+	@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
+		@content;
+	}
+}
+@mixin for-desktop-up {
+	@media (min-width: 1024px) {
+		@content;
+	}
+}
 
-  @mixin for-big-desktop-up {
-    @media (min-width: 1800px) {
-      @content;
-    }
-  }
+@mixin for-extra-large-tablet-only /*IPad Pro*/ {
+	@media only screen and (min-width: 1024px) and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+		@content;
+	}
+}
+@mixin for-extra-large-tablet-landscape /*IPad Pro*/ {
+	@media only screen and (min-width: 1366px) and (max-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
+		@content;
+	}
+}
 
+@mixin for-big-desktop-up {
+	@media (min-width: 1800px) {
+		@content;
+	}
+}
 
+/*variables*/
 
-
-  /*variables*/
-
-    $body-bg-color: #DFE0DF; 
-    $text-color: #FFF8EE;
-    $text-color-header-footer: #508866;
-    $animation-text-color: red;
-    $grid-bg-color:#508866;  
-    $button-color:#007663;
-    $border-color: #A8A9A8;
-    $font-size-label: 1.15rem;
-    $font-size-number: 1.75rem;
-    $font: 'Abel', sans-serif;
+$body-bg-color: #dfe0df;
+$text-color: #fff8ee;
+$text-color-header-footer: #508866;
+$animation-text-color: red;
+$grid-bg-color: #508866;
+$button-color: #007663;
+$border-color: #a8a9a8;
+$font-size-label: 1.15rem;
+$font-size-number: 1.75rem;
+$font: "Abel", sans-serif;
